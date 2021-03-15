@@ -118,11 +118,31 @@ impl IndexMut<(usize, usize)> for BoardState {
 
 impl Display for BoardState {
     fn fmt(&self, fmt: &mut Formatter) -> Result<(), fmt::Error> {
-        writeln!(fmt, "{}|{}|{}", self[(0, 0)], self[(0, 1)], self[(0, 2)])?;
-        writeln!(fmt, "-+-+-")?;
-        writeln!(fmt, "{}|{}|{}", self[(1, 0)], self[(1, 1)], self[(1, 2)])?;
-        writeln!(fmt, "-+-+-")?;
-        writeln!(fmt, "{}|{}|{}", self[(2, 0)], self[(2, 1)], self[(2, 2)])
+        for y in 0..BOARD_SIZE {
+            for x in 0..BOARD_SIZE {
+                write!(fmt, "{}", self[(x, y)])?;
+
+                if x != BOARD_SIZE - 1 {
+                    write!(fmt, "|")?;
+                }
+            }
+
+            writeln!(fmt, "")?;
+
+            if y != BOARD_SIZE - 1 {
+                for x in 0..BOARD_SIZE {
+                    write!(fmt, "-")?;
+
+                    if x != BOARD_SIZE - 1 {
+                        write!(fmt, "+")?;
+                    }
+                }
+
+                writeln!(fmt, "")?;
+            }
+        }
+
+        Ok(())
     }
 }
 
