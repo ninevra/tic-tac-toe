@@ -1,6 +1,8 @@
 use core::str::FromStr;
 use std::io::{self, Write};
 
+use anyhow::{self, anyhow as anyhow_error};
+
 use crate::state::Player;
 
 pub fn input_coords(player: Player) -> anyhow::Result<(usize, usize)> {
@@ -9,7 +11,7 @@ pub fn input_coords(player: Player) -> anyhow::Result<(usize, usize)> {
     if numbers.len() == 2 {
         Ok((numbers[0], numbers[1]))
     } else {
-        Err(anyhow::anyhow!(
+        Err(anyhow_error!(
             "expected exactly 2 input numbers, got {}",
             numbers.len()
         ))

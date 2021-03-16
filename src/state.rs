@@ -3,6 +3,8 @@ use core::{
     ops::{Index, IndexMut},
 };
 
+use anyhow::{self, anyhow as anyhow_error};
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum TileState {
     X,
@@ -89,7 +91,7 @@ impl BoardState {
 
     pub fn play(&mut self, (x, y): (usize, usize)) -> anyhow::Result<&mut Self> {
         if x > BOARD_SIZE || y > BOARD_SIZE {
-            return Err(anyhow::anyhow!("({}, {}) is out of bounds", x, y));
+            return Err(anyhow_error!("({}, {}) is out of bounds", x, y));
         }
 
         match self[(x, y)] {
@@ -98,7 +100,7 @@ impl BoardState {
                 self.next = self.next.opponent();
                 Ok(self)
             }
-            _ => Err(anyhow::anyhow!("({}, {}) has already been played", x, y))
+            _ => Err(anyhow_error!("({}, {}) has already been played", x, y))
         }
     }
 
