@@ -87,10 +87,19 @@ impl BoardState {
         }
     }
 
-    pub fn play(&mut self, index: (usize, usize)) -> &mut Self {
-        self[index] = self.next.into();
-        self.next = self.next.opponent();
-        self
+    pub fn play(&mut self, (x, y): (usize, usize)) -> anyhow::Result<&mut Self> {
+        if x > BOARD_SIZE || y > BOARD_SIZE {
+            return Err(anyhow::anyhow!("({}, {}) is out of bounds", x, y));
+        }
+
+        match self[(x, y)] {
+            TileState::Empty => {
+                self[(x, y)] = self.next.into();
+                self.next = self.next.opponent();
+                Ok(self)
+            }
+            _ => Err(anyhow::anyhow!("({}, {}) has already been played", x, y))
+        }
     }
 
     pub fn next(&self) -> Player {
@@ -127,9 +136,9 @@ impl Display for BoardState {
                 }
             }
 
-            writeln!(fmt, "")?;
-
             if y != BOARD_SIZE - 1 {
+                writeln!(fmt, "")?;
+
                 for x in 0..BOARD_SIZE {
                     write!(fmt, "-")?;
 
@@ -177,12 +186,12 @@ mod test {
         #[test]
         fn display() {
             assert_eq!(
-                format!("{}", BoardState::new().play((1, 1))),
+                format!("{}", BoardState::new().play((1, 1)).unwrap()),
                 " | | \n\
 -+-+-
  |X| \n\
 -+-+-
- | | \n\
+ | | \
 "
             );
         }
@@ -190,7 +199,7 @@ mod test {
         #[test]
         fn next() {
             assert_eq!(BoardState::new().next(), Player::X);
-            assert_eq!(BoardState::new().play((0, 0)).next(), Player::O);
+            assert_eq!(BoardState::new().play((0, 0)).unwrap().next(), Player::O);
         }
     }
 }
