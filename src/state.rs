@@ -108,15 +108,15 @@ impl BoardState {
         self.next
     }
 
-    pub fn iter_row<'a>(&'a self, row: usize) -> impl Iterator<Item = TileState> + 'a {
+    pub fn iter_row(&self, row: usize) -> impl Iterator<Item = TileState> + '_ {
         (0..BOARD_SIZE).map(move |x| self[(x, row)])
     }
 
-    pub fn iter_col<'a>(&'a self, col: usize) -> impl Iterator<Item = TileState> + 'a {
+    pub fn iter_col(&self, col: usize) -> impl Iterator<Item = TileState> + '_ {
         (0..BOARD_SIZE).map(move |y| self[(col, y)])
     }
 
-    pub fn iter_diag<'a>(&'a self, sinister: bool) -> impl Iterator<Item = TileState> + 'a {
+    pub fn iter_diag(&self, sinister: bool) -> impl Iterator<Item = TileState> + '_ {
         (0..BOARD_SIZE).map(move |i| self[(if sinister { BOARD_SIZE - 1 - i } else { i }, i)])
     }
 
