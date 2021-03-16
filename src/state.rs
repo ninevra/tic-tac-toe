@@ -77,14 +77,14 @@ pub const BOARD_SIZE: usize = 3;
 
 #[derive(Debug, PartialEq)]
 pub struct BoardState {
-    cells: Vec<TileState>,
+    tiles: Vec<TileState>,
     next: Player,
 }
 
 impl BoardState {
     pub fn new() -> Self {
         BoardState {
-            cells: vec![TileState::Empty; BOARD_SIZE * BOARD_SIZE],
+            tiles: vec![TileState::Empty; BOARD_SIZE * BOARD_SIZE],
             next: Player::X,
         }
     }
@@ -114,7 +114,7 @@ impl Index<(usize, usize)> for BoardState {
 
     /// Boards are indexed row-major starting in the upper left
     fn index(&self, (x, y): (usize, usize)) -> &<Self as Index<(usize, usize)>>::Output {
-        &self.cells[x + y * BOARD_SIZE]
+        &self.tiles[x + y * BOARD_SIZE]
     }
 }
 
@@ -123,7 +123,7 @@ impl IndexMut<(usize, usize)> for BoardState {
         &mut self,
         (x, y): (usize, usize),
     ) -> &mut <Self as Index<(usize, usize)>>::Output {
-        &mut self.cells[x + y * BOARD_SIZE]
+        &mut self.tiles[x + y * BOARD_SIZE]
     }
 }
 
