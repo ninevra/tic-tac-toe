@@ -9,9 +9,9 @@ use state::BoardState;
 fn main() -> anyhow::Result<()> {
     let mut state = BoardState::new();
 
-    loop {
-        println!("\n{}\n", state);
+    println!("\n{}\n", state);
 
+    loop {
         loop {
             match input_coords(state.next()) {
                 Ok(coords) => match state.play(coords) {
@@ -21,5 +21,19 @@ fn main() -> anyhow::Result<()> {
                 Err(error) => println!("{}", error),
             }
         }
+
+        println!("\n{}\n", state);
+
+        if let Some(player) = state.won() {
+            println!("{} wins!", player);
+            break;
+        }
+
+        if state.drawn() {
+            println!("Draw!");
+            break;
+        }
     }
+
+    Ok(())
 }
