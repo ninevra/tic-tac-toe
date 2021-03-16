@@ -155,7 +155,6 @@ where
 impl Index<(usize, usize)> for BoardState {
     type Output = TileState;
 
-    /// Boards are indexed row-major starting in the upper left
     fn index(&self, (x, y): (usize, usize)) -> &<Self as Index<(usize, usize)>>::Output {
         &self.tiles[x + y * BOARD_SIZE]
     }
@@ -172,7 +171,22 @@ impl IndexMut<(usize, usize)> for BoardState {
 
 impl Display for BoardState {
     fn fmt(&self, fmt: &mut Formatter) -> Result<(), fmt::Error> {
+        write!(fmt, "  ")?;
+
+        for x in 0..BOARD_SIZE {
+            write!(fmt, "{}", x)?;
+
+            if x != BOARD_SIZE - 1 {
+                write!(fmt, " ")?;
+            }
+        }
+
+        writeln!(fmt, "")?;
+        writeln!(fmt, "")?;
+
         for y in 0..BOARD_SIZE {
+            write!(fmt, "{} ", y)?;
+
             for x in 0..BOARD_SIZE {
                 write!(fmt, "{}", self[(x, y)])?;
 
@@ -183,6 +197,8 @@ impl Display for BoardState {
 
             if y != BOARD_SIZE - 1 {
                 writeln!(fmt, "")?;
+
+                write!(fmt, "  ")?;
 
                 for x in 0..BOARD_SIZE {
                     write!(fmt, "-")?;
@@ -230,15 +246,7 @@ mod test {
 
         #[test]
         fn display() {
-            assert_eq!(
-                format!("{}", BoardState::new().play((1, 1)).unwrap()),
-                " | | \n\
--+-+-
- |X| \n\
--+-+-
- | | \
-"
-            );
+            insta::assert_snapshot!(format!("{}", BoardState::new().play((1, 1)).unwrap()));
         }
 
         #[test]

@@ -20,6 +20,8 @@ fn main() -> anyhow::Result<()> {
                 },
                 Err(error) => println!("{}", error),
             }
+
+            println!("Enter coordinates x, y");
         }
 
         println!("\n{}\n", state);
