@@ -5,8 +5,8 @@ use anyhow::{self, anyhow as anyhow_error};
 
 use crate::state::Player;
 
-pub fn input_coords(player: Player) -> anyhow::Result<(usize, usize)> {
-    let string = prompt(player)?;
+pub fn input_coords(next: Player) -> anyhow::Result<(usize, usize)> {
+    let string = prompt(&format!("{} > ", next))?;
     let numbers = parse_list::<usize>(&string)?;
     if numbers.len() == 2 {
         Ok((numbers[0], numbers[1]))
@@ -18,8 +18,8 @@ pub fn input_coords(player: Player) -> anyhow::Result<(usize, usize)> {
     }
 }
 
-pub fn prompt(player: Player) -> io::Result<String> {
-    print!("{} > ", player);
+pub fn prompt(prompt: &str) -> io::Result<String> {
+    print!("{}", prompt);
     io::stdout().flush()?;
     let mut input = String::new();
     io::stdin().read_line(&mut input)?;
