@@ -1,5 +1,3 @@
-use anyhow;
-
 mod input;
 mod state;
 
