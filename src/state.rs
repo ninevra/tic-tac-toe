@@ -246,7 +246,15 @@ mod test {
 
         #[test]
         fn display() {
-            insta::assert_snapshot!(format!("{}", BoardState::new().play((1, 1)).unwrap()));
+            insta::assert_snapshot!(format!("{}", BoardState::new().play((1, 1)).unwrap()), @r###"
+              0 1 2
+
+            0  | | 
+              -+-+-
+            1  |X| 
+              -+-+-
+            2  | | 
+            "###);
         }
 
         #[test]
